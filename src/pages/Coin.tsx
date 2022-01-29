@@ -10,8 +10,8 @@ import {
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { fetchCryptoInfo, fetchCryptoTickers } from '../api/requestApi';
-import Chart from './Chart';
-import Price from './Price';
+import Chart from '../container/Chart';
+import Price from '../container/Price';
 
 const Title = styled.h1`
   font-size: 48px;
@@ -72,11 +72,12 @@ const Tab = styled.span<{ isActive: boolean }>`
   font-size: 12px;
   font-weight: 400;
   background-color: rgba(0, 0, 0, 0.5);
-  padding: 7px 0px;
   border-radius: 10px;
   color: ${(props) =>
     props.isActive ? props.theme.accentColor : props.theme.textColor};
   a {
+    height: 100%;
+    padding: 7px 0px;
     display: block;
   }
 `;
@@ -144,8 +145,8 @@ interface PriceData {
 function Coin() {
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation<RouteState>();
-  const priceMatch = useRouteMatch('/:coinId/price');
-  const chartMatch = useRouteMatch('/:coinId/chart');
+  const priceMatch = useRouteMatch('/coins/:coinId/price');
+  const chartMatch = useRouteMatch('/coins/:coinId/chart');
 
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
     ['info', coinId],
@@ -203,18 +204,18 @@ function Coin() {
 
           <Tabs>
             <Tab isActive={chartMatch !== null}>
-              <Link to={`/${coinId}/chart`}>Chart</Link>
+              <Link to={`/coins/${coinId}/chart`}>Chart</Link>
             </Tab>
             <Tab isActive={priceMatch !== null}>
-              <Link to={`/${coinId}/price`}>Price</Link>
+              <Link to={`/coins/${coinId}/price`}>Price</Link>
             </Tab>
           </Tabs>
 
           <Switch>
-            <Route path={`/:coinId/price`}>
+            <Route path={`/coins/:coinId/price`}>
               <Price />
             </Route>
-            <Route path={`/:coinId/chart`}>
+            <Route path={`/coins/:coinId/chart`}>
               <Chart coinId={coinId} />
             </Route>
           </Switch>

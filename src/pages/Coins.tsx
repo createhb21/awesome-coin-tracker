@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { fetchCryptoes } from '../api/requestApi';
-
-export type CoinsProps = {};
+import { isDarkAtom } from '../store/themeState';
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -24,9 +23,10 @@ const CoinList = styled.ul``;
 
 const Coin = styled.li`
   background-color: white;
-  color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.bgTextColor};
   border-radius: 15px;
   margin-bottom: 10px;
+  box-shadow: 0px 1px 4px rgba(19, 24, 48, 0.2);
   a {
     display: flex;
     align-items: center;
@@ -66,16 +66,19 @@ interface ICoin {
   type: string;
 }
 
-function Coins({}: CoinsProps) {
+function Coins() {
   const { isLoading, data } = useQuery<ICoin[]>('allCryptoes', fetchCryptoes);
+
+  /* const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev); */
 
   return (
     <Container>
       <Helmet>
-        <title>Coin Awesome</title>
+        <title>코인썸(Coinsome)</title>
       </Helmet>
       <Header>
-        <Title>Coin Awesome</Title>
+        <Title>Coinsome</Title>
       </Header>
       {isLoading ? (
         <Loader>Loading...</Loader>
@@ -85,7 +88,7 @@ function Coins({}: CoinsProps) {
             <Coin key={coin.id}>
               <Link
                 to={{
-                  pathname: `/${coin.id}`,
+                  pathname: `/coins/${coin.id}`,
                   state: { name: coin.name },
                 }}
               >
