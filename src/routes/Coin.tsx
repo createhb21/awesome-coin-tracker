@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import {
   Switch,
@@ -55,7 +54,8 @@ const OverviewItem = styled.div`
   }
 `;
 const Description = styled.p`
-  margin: 20px 0px;
+  margin: 20px 10px;
+  line-height: 1.625;
 `;
 
 const Tabs = styled.div`
@@ -153,6 +153,7 @@ function Coin() {
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
     ['tickers', coinId],
     () => fetchCryptoTickers(coinId),
+    { refetchInterval: 5000 },
   );
 
   const loading = infoLoading || tickersLoading;
@@ -178,8 +179,8 @@ function Coin() {
               <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{infoData?.open_source ? 'Yes' : 'No'}</span>
+              <span>Price:</span>
+              <span>{tickersData?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
@@ -208,7 +209,7 @@ function Coin() {
               <Price />
             </Route>
             <Route path={`/:coinId/chart`}>
-              <Chart />
+              <Chart coinId={coinId} />
             </Route>
           </Switch>
         </>
