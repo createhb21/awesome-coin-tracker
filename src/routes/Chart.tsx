@@ -26,15 +26,17 @@ function Chart({ coinId }: ChartProps) {
 
   const getChartGradient = () => {
     const closingPrices = data?.map((price) => price.close);
+    let currentColor = '';
+
     if (closingPrices) {
       let start = 0;
       let last = closingPrices.length - 1;
-      let currentColor;
       closingPrices[start] <= closingPrices[last]
         ? (currentColor = 'red')
         : (currentColor = 'pink');
-      return currentColor;
-    } else return '';
+    }
+
+    return currentColor;
   };
 
   return (
