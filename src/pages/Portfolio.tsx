@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import ToDoList from '../components/ToDoList';
 
 export type PortfolioProps = {};
@@ -5,6 +6,7 @@ export type PortfolioProps = {};
 function Portfolio({}: PortfolioProps) {
   return (
     <div>
+      <h1>Your Portfolio is here</h1>
       <ToDoList />
     </div>
   );
