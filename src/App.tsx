@@ -4,7 +4,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { ThemeProvider } from 'styled-components';
 import { darkTheme, lightTheme } from './lib/styles/theme';
 import { useRecoilValue } from 'recoil';
-import { isDarkAtom } from './store/themeState';
+import { isDarkAtom } from './store/themeStates';
 
 function App() {
   const isDark = useRecoilValue(isDarkAtom);

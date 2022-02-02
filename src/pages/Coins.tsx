@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { fetchCryptoes } from '../api/requestApi';
-import { isDarkAtom } from '../store/themeState';
+import { isDarkAtom } from '../store/themeStates';
 
 const Container = styled.div`
   padding: 0px 20px;

@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
-import { fetchCryptoHistory } from '../api/requestApi';
+import { fetchCryptoHistory } from '../../api/requestApi';
 import ApexChart from 'react-apexcharts';
-import { isDarkAtom } from '../store/themeState';
+import { isDarkAtom } from '../../store/themeStates';
 import { useRecoilValue } from 'recoil';
 
 interface IHistoricalData {
