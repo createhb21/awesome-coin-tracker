@@ -1,7 +1,7 @@
-import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { atom, useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import DragabbleCard from '../../components/DragabbleCard';
+import ToDoBoard from '../../components/ToDoBoard';
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,54 +16,46 @@ const Wrapper = styled.div`
 const Boards = styled.div`
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(1, 1fr);
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
 `;
 
-const Board = styled.div`
-  padding: 20px 10px;
-  padding-top: 30px;
-  background-color: ${(props) => props.theme.borderColor};
-  border-radius: 5px;
-  min-height: 200px;
-`;
+export interface IToDoState {
+  [key: string]: string[];
+}
 
-export const toDoState = atom({
-  key: 'toDo',
-  default: ['a', 'b', 'c', 'd', 'e', 'f'],
+export const toDoAtomState = atom<IToDoState>({
+  key: 'toDoAtom',
+  default: {
+    to_do: ['a', 'b'],
+    doing: ['c', 'd', 'e'],
+    done: ['f'],
+  },
 });
 
-function App() {
-  const [toDos, setToDos] = useRecoilState(toDoState);
+function Board() {
+  const [toDos, setToDos] = useRecoilState(toDoAtomState);
 
   const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
-    if (!destination) return;
-    setToDos((oldToDos) => {
-      const copyToDos = [...oldToDos];
-
-      copyToDos.splice(source.index, 1);
-
-      copyToDos.splice(destination?.index, 0, draggableId);
-      return copyToDos;
-    });
+    // if (!destination) return;
+    // setToDos((oldToDos) => {
+    //   const copyToDos = [...oldToDos];
+    //   copyToDos.splice(source.index, 1);
+    //   copyToDos.splice(destination?.index, 0, draggableId);
+    //   return copyToDos;
+    // });
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
         <Boards>
-          <Droppable droppableId="one">
-            {(magic) => (
-              <Board ref={magic.innerRef} {...magic.droppableProps}>
-                {toDos.map((toDo, index) => (
-                  <DragabbleCard key={toDo} toDo={toDo} index={index} />
-                ))}
-                {magic.placeholder}
-              </Board>
-            )}
-          </Droppable>
+          {Object.keys(toDos).map((boardId) => (
+            <ToDoBoard key={boardId} boardId={boardId} toDos={toDos[boardId]} />
+          ))}
         </Boards>
       </Wrapper>
     </DragDropContext>
   );
 }
 
-export default App;
+export default Board;
